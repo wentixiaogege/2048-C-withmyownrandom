@@ -6,7 +6,7 @@
 #define false 0
 #define bool int
 // -1 and 0??
-int a[4][4]={0},n;
+int Array2048[10][10]={0},n;
 
 void swap(int *a ,int *b)
 {
@@ -42,7 +42,7 @@ bool isFull(int n){
 	bool mark = true;
 	for ( i = 0; i < n; ++i){
 		for ( j = 0; j < n; ++j){
-			if (a[i][j] == 0){
+			if (Array2048[i][j] == 0){
 				mark = false;
 				return mark;
 			}
@@ -55,7 +55,7 @@ bool isWin(int n){
 	bool mark = false;
 	for ( i = 0; i < n; ++i){
 		for ( j = 0; j < n; ++j){
-			if (a[i][j] >=2048){
+			if (Array2048[i][j] >=2048){
 				mark = true;
 				return mark;
 			}
@@ -71,7 +71,7 @@ bool isOver(int n){
 	}
 	for ( i = 0; i < n; ++i){
 		for ( j = 0; j < n; ++j){
-			if (a[i][j] == a[i][j + 1] || a[i][j] == a[i + 1][j]){
+			if (Array2048[i][j] == Array2048[i][j + 1] || Array2048[i][j] == Array2048[i + 1][j]){
 				return false;
 			}
 		}
@@ -91,8 +91,8 @@ void fillBox(int n){
 		j = rand() % n;
 		num = rand() % 2 == 0 ? 2 : 4;
 
-		if (a[i][j] == 0){
-			a[i][j] = num;
+		if (Array2048[i][j] == 0){
+			Array2048[i][j] = num;
 			break;
 		}
 	}
@@ -103,8 +103,8 @@ void up_remove_blank(int n){
 	for(j=0;j<n;j++){
 		for(i=1;i<n;i++){
 			k=i;
-			while(k-1>=0&&a[k-1][j]==0){//上面的那个为空 
-				swap(&a[k][j],&a[k-1][j]);
+			while(k-1>=0&&Array2048[k-1][j]==0){//上面的那个为空 
+				swap(&Array2048[k][j],&Array2048[k-1][j]);
 				k--;
 				
 			}
@@ -116,8 +116,8 @@ void down_remove_blank(int n){
 	for(j=0;j<n;j++){
 		for(i=n-2;i>=0;i--){
 			k=i;
-			while(k+1<=n-1&&a[k+1][j]==0){//上面的那个为空 
-				swap(&a[k][j],&a[k+1][j]);
+			while(k+1<=n-1&&Array2048[k+1][j]==0){//上面的那个为空 
+				swap(&Array2048[k][j],&Array2048[k+1][j]);
 				k++;	
 			}
 		}
@@ -128,8 +128,8 @@ void left_remove_blank(int n){
 	for(i=0;i<n;i++){
 		for(j=1;j<n;j++){
 			k=j;
-			while(k-1>=0&&a[i][k-1]==0){//上面的那个为空 
-				swap(&a[i][k],&a[i][k-1]);
+			while(k-1>=0&&Array2048[i][k-1]==0){//上面的那个为空 
+				swap(&Array2048[i][k],&Array2048[i][k-1]);
 				k--;
 			}	
 		}
@@ -140,8 +140,8 @@ void right_remove_blank(int n){
 	for(i=0;i<n;i++){
 		for(j=n-2;j>=0;j--){
 			k=j;
-			while(k+1<=n-1&&a[i][k+1]==0){//上面的那个为空 
-				swap(&a[i][k],&a[i][k+1]);
+			while(k+1<=n-1&&Array2048[i][k+1]==0){//上面的那个为空 
+				swap(&Array2048[i][k],&Array2048[i][k+1]);
 				k++;	
 			}	
 		}
@@ -151,9 +151,9 @@ void left(int n){
 	int i,j;
 	for(i=0;i<n;i++){
 		for(j=0;j<n-1;j++){
-			if(a[i][j]==a[i][j+1]){
-				a[i][j]+=a[i][j+1];
-				a[i][j+1]=0;
+			if(Array2048[i][j]==Array2048[i][j+1]){
+				Array2048[i][j]+=Array2048[i][j+1];
+				Array2048[i][j+1]=0;
 				left_remove_blank(n);
 			}
 		}
@@ -163,9 +163,9 @@ void right(int n){
 		int i,j;
 	for(i=0;i<n;i++){
 		for(j=n-1;j>=1;j--){
-			if(a[i][j]==a[i][j-1]){
-				a[i][j]+=a[i][j-1];
-				a[i][j-1]=0;
+			if(Array2048[i][j]==Array2048[i][j-1]){
+				Array2048[i][j]+=Array2048[i][j-1];
+				Array2048[i][j-1]=0;
 				right_remove_blank(n);
 			}
 		}
@@ -175,9 +175,9 @@ void up(int n){
 	int i,j;
 	for(j=0;j<n;j++){//每一列 
 		for(i=0;i<n-1;i++){
-			if(a[i][j]==a[i+1][j]){
-				a[i][j]=a[i][j]+a[i+1][j];
-				a[i+1][j]=0;
+			if(Array2048[i][j]==Array2048[i+1][j]){
+				Array2048[i][j]=Array2048[i][j]+Array2048[i+1][j];
+				Array2048[i+1][j]=0;
 				//移除空格
 				up_remove_blank(n); 
 			}
@@ -188,9 +188,9 @@ void down(int n){
 	int i,j;
 	for(j=0;j<n;j++){//每一列 
 		for(i=n-1;i>=1;i--){
-			if(a[i][j]==a[i-1][j]){
-				a[i][j]=a[i][j]+a[i-1][j];
-				a[i-1][j]=0;
+			if(Array2048[i][j]==Array2048[i-1][j]){
+				Array2048[i][j]=Array2048[i][j]+Array2048[i-1][j];
+				Array2048[i-1][j]=0;
 				//移除空格
 				down_remove_blank(n); 
 			}
@@ -204,12 +204,12 @@ void output(int n){
 		line(n);
 		for ( j = 0; j < n; ++j){
 			printf("|");
-			if (a[i][j] == 0){
+			if (Array2048[i][j] == 0){
 				printf("\t");
 				continue;
 			}
 
-			printf("%2d\t", a[i][j]);
+			printf("%2d\t", Array2048[i][j]);
 		}
 		printf("|");
 		printf("\n");
